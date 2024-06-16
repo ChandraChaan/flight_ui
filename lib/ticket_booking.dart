@@ -33,15 +33,125 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
                       ClipPath(
                         clipper: AirplaneNoseClipper(),
                         child: Container(
-                          height: 400,
+                          height: 260,
                           width: MediaQuery.of(context).size.width / 1.5,
                           color: Colors.white,
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 100,
+                              ),
+                              const Text('Seating Type'),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.deepOrange,
+                                    border: Border.all(
+                                      color: Colors.deepOrange,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8),
+                                  child: DropdownButton<String>(
+                                    value: 'Economy',
+                                    items: ['Economy', 'Business']
+                                        .map((label) => DropdownMenuItem(
+                                              value: label,
+                                              child: Text(
+                                                label,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ))
+                                        .toList(),
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Icon(
+                                        Icons.chair,
+                                        color: Colors.grey,
+                                      ),
+                                      Text(
+                                        'Available',
+                                        style: TextStyle(fontSize: 6),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Icon(
+                                        Icons.chair,
+                                        color: Colors.orange,
+                                      ),
+                                      Text(
+                                        'Booked',
+                                        style: TextStyle(fontSize: 6),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    children: [
+                                      Icon(
+                                        Icons.chair,
+                                        color: Colors.green,
+                                      ),
+                                      Text(
+                                        'Selected',
+                                        style: TextStyle(fontSize: 6),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text('A'),
+                                  Text('B'),
+                                  Text('C'),
+                                  Text(' '),
+                                  Text('D'),
+                                  Text('E'),
+                                  Text('F'),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Divider(
+                                color: Colors.grey.shade200,
+                                height: 0.5,
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       Container(
-                        height: MediaQuery.of(context).size.height * 2,
+                        height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width / 1.5,
                         color: Colors.white,
+                        child: _buildSeatMap(),
                       ),
                     ],
                   ),
@@ -153,16 +263,6 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
               ],
             ),
             SizedBox(height: 6),
-            // DropdownButton<String>(
-            //   value: 'Economy',
-            //   items: ['Economy', 'Business']
-            //       .map((label) => DropdownMenuItem(
-            //             value: label,
-            //             child: Text(label,style: const TextStyle(color: Colors.white,),),
-            //           ))
-            //       .toList(),
-            //   onChanged: (value) {},
-            // ),
           ],
         ),
       ),
@@ -177,19 +277,41 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
           children: List.generate(24, (rowIndex) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(6, (colIndex) {
-                SeatStatus status = seats[rowIndex][colIndex];
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      seats[rowIndex][colIndex] = status == SeatStatus.available
-                          ? SeatStatus.selected
-                          : SeatStatus.available;
-                    });
-                  },
-                  child: _buildSeat(status),
-                );
-              }),
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(3, (colIndex) {
+                    SeatStatus status = seats[rowIndex][colIndex];
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          seats[rowIndex][colIndex] = status == SeatStatus.available
+                              ? SeatStatus.selected
+                              : SeatStatus.available;
+                        });
+                      },
+                      child: _buildSeat(status),
+                    );
+                  }),
+                ),
+                Text('${rowIndex+1}'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(3, (colIndex) {
+                    SeatStatus status = seats[rowIndex][colIndex];
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          seats[rowIndex][colIndex] = status == SeatStatus.available
+                              ? SeatStatus.selected
+                              : SeatStatus.available;
+                        });
+                      },
+                      child: _buildSeat(status),
+                    );
+                  }),
+                ),
+              ],
             );
           }),
         ),
@@ -215,9 +337,9 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
       margin: const EdgeInsets.all(4),
       width: 24,
       height: 24,
-      decoration: BoxDecoration(
+      child: Icon(
+        Icons.chair,
         color: color,
-        borderRadius: BorderRadius.circular(4),
       ),
     );
   }
@@ -242,9 +364,9 @@ class AirplaneNoseClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = Path();
     path.moveTo(0, size.height);
-    path.lineTo(0, size.height / 2);
+    path.lineTo(0, size.height / 1);
     path.quadraticBezierTo(
-        size.width / 2, -size.height / 2, size.width, size.height / 2);
+        size.width / 2, -size.height / 2, size.width, size.height / 1);
     path.lineTo(size.width, size.height);
     path.close();
     return path;
