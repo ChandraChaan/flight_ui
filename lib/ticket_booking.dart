@@ -6,7 +6,8 @@ class FlightSeatBookingScreen extends StatefulWidget {
   const FlightSeatBookingScreen({super.key});
 
   @override
-  _FlightSeatBookingScreenState createState() => _FlightSeatBookingScreenState();
+  _FlightSeatBookingScreenState createState() =>
+      _FlightSeatBookingScreenState();
 }
 
 class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
@@ -16,62 +17,98 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flight Seat Booking'),
-        centerTitle: true,
-      ),
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          _buildHeader(),
-          Expanded(child: _buildSeatMap()),
-          _buildContinueButton(),
+          _buildBackground(),
+          Column(
+            children: <Widget>[
+              _buildHeader(),
+              Expanded(child: _buildSeatMap()),
+              _buildContinueButton(),
+            ],
+          ),
         ],
       ),
     );
   }
 
+  Widget _buildBackground() {
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/flight_background.jpeg',),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
   Widget _buildHeader() {
     return Container(
       padding: const EdgeInsets.all(16),
-      child: Column(
-        children: <Widget>[
-          const Text(
-            'DEL - UAE',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const Text(
-            '20 June 2024',
-            style: TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '03h 55m',
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(width: 16),
-              Icon(Icons.airplanemode_active, color: Colors.orange),
-              SizedBox(width: 16),
-              Text(
-                '1 Adult',
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          DropdownButton<String>(
-            value: 'Economy',
-            items: ['Economy', 'Business']
-                .map((label) => DropdownMenuItem(
-              child: Text(label),
-              value: label,
-            ))
-                .toList(),
-            onChanged: (value) {},
-          ),
-        ],
+      child: const SafeArea(
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.arrow_back_ios_new, color: Colors.white,),
+                Icon(Icons.edit_note,color: Colors.white,),
+              ],
+            ),
+            Text(
+              '20 June 2024',
+              style: TextStyle(fontSize: 18,color: Colors.white,),
+            ),
+            Row( mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'DEL',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white,),
+                ),
+                Text(
+                  '-----',
+                  style: TextStyle( color: Colors.orange),
+                ),
+                Icon(Icons.flight_land, color: Colors.orange,),
+                Text(
+                  '-----',
+                  style: TextStyle( color: Colors.orange),
+                ),
+                Text(
+                  'UAE',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white,),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Text(
+              '03h 55m',
+              style: TextStyle(fontSize: 18,color: Colors.white,),
+            ),
+            SizedBox(height: 6),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.person,color: Colors.white,),
+                Text(
+                  '1 Adult',
+                  style: TextStyle(fontSize: 18,color: Colors.white,),
+                ),
+              ],
+            ),
+            SizedBox(height: 6),
+            // DropdownButton<String>(
+            //   value: 'Economy',
+            //   items: ['Economy', 'Business']
+            //       .map((label) => DropdownMenuItem(
+            //             value: label,
+            //             child: Text(label,style: const TextStyle(color: Colors.white,),),
+            //           ))
+            //       .toList(),
+            //   onChanged: (value) {},
+            // ),
+          ],
+        ),
       ),
     );
   }
@@ -134,7 +171,8 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white, backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.orange,
         ),
         onPressed: () {},
         child: const Text('Continue'),

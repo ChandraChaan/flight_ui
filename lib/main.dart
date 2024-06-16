@@ -9,6 +9,7 @@ class FlightSeatBookingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flight Seat Booking',
       theme: ThemeData(
         primarySwatch: Colors.orange,
