@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:math' as math;
 
 import 'enums.dart';
 
@@ -18,7 +19,8 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
       24, (index) => List.generate(6, (index) => SeatStatus.available));
   List<List<SeatStatus>> leftSeats = List.generate(
       24, (index) => List.generate(6, (index) => SeatStatus.available));
-String cabinType = 'Economy';
+  String cabinType = 'Economy';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,8 @@ String cabinType = 'Economy';
                               ),
                               Container(
                                 height: 36,
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
                                   color: Colors.deepOrange,
                                   borderRadius: BorderRadius.circular(20),
@@ -62,15 +65,15 @@ String cabinType = 'Economy';
                                   items: ['Economy', 'Business']
                                       .map(
                                         (label) => DropdownMenuItem(
-                                      value: label,
-                                      child: Text(
-                                        label,
-                                        style: TextStyle(
-                                          color: Colors.white,
+                                          value: label,
+                                          child: Text(
+                                            label,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  )
+                                      )
                                       .toList(),
                                   onChanged: (value) {
                                     setState(() {
@@ -153,11 +156,88 @@ String cabinType = 'Economy';
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width / 1.5,
-                        color: Colors.white,
-                        child: _buildSeatMap(),
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width / 1.5,
+                              color: Colors.white,
+                              child: _buildSeatMap(),
+                            ),
+                            Positioned(
+                              right: 248,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 200,),
+                                  SizedBox(
+                                    height: 505,
+                                    child: Stack(
+                                      children: [
+                                        Transform.rotate(
+                                          angle: 15 * math.pi / -27,
+                                          child: CustomPaint(
+                                            size: const Size(500, 500),
+                                            painter: TrianglePainter(),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          right: 65,
+                                          bottom: 280,
+                                          child: Transform.rotate(
+                                              angle: 15 * math.pi / 10.1,
+                                              child: const Text(
+                                                'Wings',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.bold),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              left: 245,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 78,),
+                                  SizedBox(
+                                    height: 498,
+                                    child: Stack(
+                                      children: [
+                                        Transform.rotate(
+                                          angle: 15 * math.pi / 34,
+                                          child: CustomPaint(
+                                            size: const Size(500, 500),
+                                            painter: TrianglePainter(),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 70,
+                                          bottom: 220,
+                                          child: Transform.rotate(
+                                              angle: 15 * math.pi / 30.5,
+                                              child: const Text(
+                                                'Wings',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -166,7 +246,8 @@ String cabinType = 'Economy';
               // _buildContinueButton(),
             ],
           ),
-          Positioned(bottom:0, left:66, right:66,child: _buildContinueButton()),
+          Positioned(
+              bottom: 0, left: 66, right: 66, child: _buildContinueButton()),
         ],
       ),
     );
@@ -292,16 +373,17 @@ String cabinType = 'Economy';
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          leftSeats[rowIndex][colIndex] = status == SeatStatus.available
-                              ? SeatStatus.selected
-                              : SeatStatus.available;
+                          leftSeats[rowIndex][colIndex] =
+                              status == SeatStatus.available
+                                  ? SeatStatus.selected
+                                  : SeatStatus.available;
                         });
                       },
                       child: _buildSeat(status),
                     );
                   }),
                 ),
-                Text('${rowIndex+1}'),
+                Text('${rowIndex + 1}'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(3, (colIndex) {
@@ -309,9 +391,10 @@ String cabinType = 'Economy';
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          seats[rowIndex][colIndex] = status == SeatStatus.available
-                              ? SeatStatus.selected
-                              : SeatStatus.available;
+                          seats[rowIndex][colIndex] =
+                              status == SeatStatus.available
+                                  ? SeatStatus.selected
+                                  : SeatStatus.available;
                         });
                       },
                       child: _buildSeat(status),
@@ -360,7 +443,8 @@ String cabinType = 'Economy';
             foregroundColor: Colors.white,
             backgroundColor: Colors.deepOrange,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)), // Sharp corners
+              borderRadius:
+                  BorderRadius.all(Radius.circular(8)), // Sharp corners
             ),
           ),
           onPressed: () {
@@ -370,7 +454,6 @@ String cabinType = 'Economy';
         ),
       ),
     );
-
   }
 }
 
@@ -389,6 +472,29 @@ class AirplaneNoseClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return false;
+  }
+}
+
+class TrianglePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Define the points for an obtuse scalene triangle
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    final path = Path()
+      ..moveTo(size.width * 0.2, size.height * 0.8) // Point 1
+      ..lineTo(size.width * 0.8, size.height * 0.9) // Point 2 (obtuse angle)
+      ..lineTo(size.width * 0.5, size.height * 0.2) // Point 3
+      ..close();
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
 }
