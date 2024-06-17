@@ -16,7 +16,9 @@ class FlightSeatBookingScreen extends StatefulWidget {
 class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
   List<List<SeatStatus>> seats = List.generate(
       24, (index) => List.generate(6, (index) => SeatStatus.available));
-
+  List<List<SeatStatus>> leftSeats = List.generate(
+      24, (index) => List.generate(6, (index) => SeatStatus.available));
+String cabinType = 'Economy';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,31 +48,35 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
                                 height: 10,
                               ),
                               Container(
+                                height: 36,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
                                 decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
-                                    border: Border.all(
-                                      color: Colors.deepOrange,
+                                  color: Colors.deepOrange,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: DropdownButton<String>(
+                                  value: cabinType,
+                                  dropdownColor: Colors.deepOrange,
+                                  underline: Container(),
+                                  iconEnabledColor: Colors.white,
+                                  items: ['Economy', 'Business']
+                                      .map(
+                                        (label) => DropdownMenuItem(
+                                      value: label,
+                                      child: Text(
+                                        label,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
                                     ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20))),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 8, right: 8),
-                                  child: DropdownButton<String>(
-                                    value: 'Economy',
-                                    items: ['Economy', 'Business']
-                                        .map((label) => DropdownMenuItem(
-                                              value: label,
-                                              child: Text(
-                                                label,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {},
-                                  ),
+                                  )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      cabinType = value!;
+                                    });
+                                  },
                                 ),
                               ),
                               const SizedBox(
@@ -157,9 +163,10 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
                   ),
                 ),
               ),
-              _buildContinueButton(),
+              // _buildContinueButton(),
             ],
           ),
+          Positioned(bottom:0, left:66, right:66,child: _buildContinueButton()),
         ],
       ),
     );
@@ -281,11 +288,11 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(3, (colIndex) {
-                    SeatStatus status = seats[rowIndex][colIndex];
+                    SeatStatus status = leftSeats[rowIndex][colIndex];
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          seats[rowIndex][colIndex] = status == SeatStatus.available
+                          leftSeats[rowIndex][colIndex] = status == SeatStatus.available
                               ? SeatStatus.selected
                               : SeatStatus.available;
                         });
@@ -346,16 +353,24 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
 
   Widget _buildContinueButton() {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.orange,
+      padding: const EdgeInsets.all(10.0),
+      child: SizedBox(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.deepOrange,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8)), // Sharp corners
+            ),
+          ),
+          onPressed: () {
+            // Your onPressed code here
+          },
+          child: const Text('Continue'),
         ),
-        onPressed: () {},
-        child: const Text('Continue'),
       ),
     );
+
   }
 }
 
