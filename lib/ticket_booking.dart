@@ -294,15 +294,29 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'DEL',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      'DEL',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Delhi International Airport',
+                      style: TextStyle(
+                        fontSize: 6,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(width: 3),
                 Text(
                   '-----',
                   style: TextStyle(color: Colors.orange),
@@ -315,13 +329,26 @@ class _FlightSeatBookingScreenState extends State<FlightSeatBookingScreen> {
                   '-----',
                   style: TextStyle(color: Colors.orange),
                 ),
-                Text(
-                  'UAE',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                SizedBox(width: 6),
+                Column(
+                  children: [
+                    Text(
+                      'UAE',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Dubai Airport',
+                      style: TextStyle(
+                        fontSize: 6,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
